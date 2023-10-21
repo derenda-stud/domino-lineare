@@ -39,6 +39,7 @@ void stampa_combinazioni_tessere() {
     }
 }
 
+//prova1
 void genera_tessere(tessera *tessere, int dimensione) {
     // Per ciascuna tessera del domino
     for(int i=0; i<dimensione; i++) {
