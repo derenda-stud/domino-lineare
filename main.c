@@ -1,17 +1,10 @@
 #include<stdio.h>
-#include<time.h>
 #include<stdlib.h>
+#include<time.h>
+#include"lista_concatenata.h"
 
 /* Progetto Domino Lineare di Bertoncello Nicolas, Derevytskyy Alessandro */
-
-typedef struct {
-    int estremo_sinistro;
-    int estremo_destro;
-} tessera;
-
 void stampa_combinazioni_tessere();
-void stampa_tessere(tessera *tessere, int dimensione);
-void genera_tessere(tessera *tessere, int dimensione);
 
 int main() {
     int num_tessere;
@@ -37,22 +30,4 @@ void stampa_combinazioni_tessere() {
         }
         printf("\n");
     }
-}
-
-//prova1
-void genera_tessere(tessera *tessere, int dimensione) {
-    // Per ciascuna tessera del domino
-    for(int i=0; i<dimensione; i++) {
-        // Genera due numeri casuali per ciasun estremo della tessera
-        tessere[i].estremo_sinistro = rand() % 6 + 1;
-        tessere[i].estremo_destro = rand() % 6 + 1;
-    }
-}
-
-void stampa_tessere(tessera *tessere, int dimensione) {
-    printf("Le tessere assegnate sono le seguenti: ");
-    for(int i=0; i<dimensione; i++) {
-        printf("[%d|%d] ", tessere[i].estremo_sinistro, tessere[i].estremo_destro);
-    }
-    printf("\n");
 }
