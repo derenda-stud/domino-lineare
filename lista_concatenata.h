@@ -1,14 +1,21 @@
 #ifndef lista_concatenata_h
 #define lista_concatenata_h
 
-typedef struct {
+typedef struct struct_tessera {
     int estremo_sinistro;
     int estremo_destro;
-    struct tessera *successivo;
+    struct struct_tessera *successivo;
 } tessera;
 
-// Prototipi di funzione
-void genera_tessere(tessera *tessere, int dimensione);
-void stampa_tessere(tessera *tessere, int dimensione);
+// Genera delle tessere dai valori casuali dopo l'inserimento dell'utente
+void genera_tessere(tessera **testa, int dimensione);
+// Crea una nuova tessera assegnando una locazione nella memoria dinamica
+tessera* crea_tessera(int estremo_sinistro, int estremo_destro);
+// Inserisci una nuova tessera in coda alla lista
+void inserimento_in_testa(tessera **testa, tessera *da_inserire);
+// Inserisci una nuova tessera in coda alla lista
+void inserimento_in_coda(tessera **testa, tessera *da_inserire);
+// Stampa tutte le tessere con i corrispettivi valori
+void stampa_tessere(tessera *testa);
 
 #endif

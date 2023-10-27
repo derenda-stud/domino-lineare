@@ -15,10 +15,10 @@ int main() {
     scanf("%d", &num_tessere);
 
     // Creazione delle tessere nella mano del giocatore
-    tessera tessere[num_tessere];
-    genera_tessere(tessere, num_tessere);
-    stampa_tessere(tessere, num_tessere);
-
+    tessera *testa = NULL;
+    genera_tessere(&testa, num_tessere);
+    stampa_tessere(testa);
+    
     return 0;
 }
 
