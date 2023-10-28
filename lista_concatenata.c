@@ -99,3 +99,71 @@ void stampa_tessere(tessera *tessere, int dimensione) {
     printf("\n");
 }
 */
+
+tessera* trova_tessera(tessera *testa, int indice_tessera){
+    tessera *corrente = testa;
+    for(int i = 0; i < indice_tessera; i++){
+        corrente = corrente->successivo;
+    }
+    return corrente;
+}
+
+// [1] Elimina la prima tessera
+//   x
+// [3|6] [1|6] [4|5]
+//   0     1     2
+
+// ----- [1|6] [4|5]
+// Imposta il puntatore della testa al successivo
+
+// [2] Elimina una tessera centrale
+//         x
+// [3|6] [1|6] [4|5]
+//   0     1     2
+
+// [3|6] ----- [4|5]
+//   0           1
+// La tessera precedente punta alla successiva
+
+// [3] Elimina l'ultima tessera
+//               x
+// [3|6] [1|6] [4|5]
+//   0     1     2
+
+// [3|6] [1|6] ------
+// La tessera precedente punta a NULL
+
+// [4] E' rimasta solo una tessera
+//   x
+// [3|6]
+//   0
+
+// -------
+// La testa punta a NULL
+
+void rimuovi_tessera(tessera **testa, tessera *da_rimuovere){
+    tessera *precedente = NULL;
+    tessera *corrente = *testa;
+    while(corrente != da_rimuovere){
+        precedente = corrente;
+        corrente = corrente->successivo;
+    }
+    // Voglio rimuovere la prima tessera della lista
+    if(corrente == *testa) {
+        // [1] Se sono presenti altri tessere
+        if(corrente->successivo != NULL) {
+            *testa = corrente->successivo;
+        } else {
+            // [4] Altrimenti e' l'unica della lista
+            *testa = NULL;
+        }
+    }
+    else if(corrente->successivo == NULL){ // [3]
+        precedente->successivo = NULL;
+    } else {  
+        // [2] Salva il nuovo nodo successivo
+        precedente->successivo = corrente->successivo;
+    }
+    // Libera la memoria del nodo da rimuovere
+    free(da_rimuovere);
+}
