@@ -26,20 +26,17 @@ int main() {
     int indice_tessera = inserisci_indice_tessera(numero_tessere);
     
     if(piano_gioco == NULL) {
-        // Puntatore
+        // Trova la tessere da prelevare dalla mano del giocatore
         tessera *trovata = trova_tessera(mano_giocatore, indice_tessera);
-        // Portati dietro solo il valore di una tessera
-        tessera da_inserire;
-        da_inserire.estremo_sinistro = trovata->estremo_sinistro;
-        da_inserire.estremo_destro = trovata->estremo_destro;
-        da_inserire.successivo = NULL;
-        // Inserisci la tessera in testa al piano di gioco
-        inserimento_in_testa(&piano_gioco, &da_inserire);
-        // Rimuovi la tessera dalla mano del giocatore
         rimuovi_tessera(&mano_giocatore, trovata);
+        // Adesso aggiungi la tessera al piano di gioco
+        inserimento_in_testa(&piano_gioco, trovata);
+        // Stampa delle tessere presenti in entrambe le liste
+        printf("Tessere sul piano di gioco:\n");
+        stampa_tessere(piano_gioco);
+        printf("Tessere nella mano del giocatore:\n");
         stampa_tessere(mano_giocatore);
     }
-    system("PAUSE");
     return 0;
 }
 

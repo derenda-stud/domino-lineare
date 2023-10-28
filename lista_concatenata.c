@@ -9,11 +9,9 @@ void genera_tessere(tessera **testa, int dimensione) {
         // Genera due numeri casuali per ciasun estremo della tessera
         int casuale_sinistro = rand() % 6 + 1;
         int casuale_destro = rand() % 6 + 1;
-        printf("Ho generato %d %d\n", casuale_sinistro, casuale_destro);
         // Aggiungi una nuova tessera
         tessera* nuova = crea_tessera(casuale_sinistro, casuale_destro);
         inserimento_in_coda(testa, nuova);
-        printf("Valori in testa: %d %d\n", (*testa)->estremo_sinistro, (*testa)->estremo_destro);
     }
 }
 
@@ -25,7 +23,6 @@ tessera* crea_tessera(int estremo_sinistro, int estremo_destro) {
     nuova_tessera->estremo_destro = estremo_destro;
     // Inizializzo il valore del puntatore successivo
     nuova_tessera->successivo = NULL;
-    printf("I valori salvati nella nuova tessera sono: %d %d\n", nuova_tessera->estremo_sinistro, nuova_tessera->estremo_destro);
     // Ritorna il puntatore della nuova tessera creata
     return nuova_tessera;
 }
@@ -35,7 +32,6 @@ void inserimento_in_testa(tessera **testa, tessera *da_inserire) {
     da_inserire->successivo = *testa;
     // Aggiorna il puntatore della testa
     *testa = da_inserire;
-    printf("Ho salvato: %d %d\n", (*testa)->estremo_sinistro, (*testa)->estremo_destro);
 }
 
 void inserimento_in_coda(tessera **testa, tessera *da_inserire) {
@@ -45,24 +41,19 @@ void inserimento_in_coda(tessera **testa, tessera *da_inserire) {
     tessera *corrente = *testa;
     while(corrente != NULL) {
         precedente = corrente;
-        printf("Valori in nodo precedente: %d %d\n", precedente->estremo_sinistro, precedente->estremo_destro);
         corrente = corrente->successivo;
-        printf("Sono andato al successivo\n");
     }
     // Se non sono ancora presenti tessere nella lista 
     if(*testa == NULL) {
-        printf("Assegno la testa\n");
         // Inserisci il nodo come testa
         *testa = da_inserire;
     } else {
-        printf("Inserisco in coda\n");
         // Altrimenti inseriscilo in coda alla lista
         precedente->successivo = da_inserire;
     }
 }
 
 void stampa_tessere(tessera *testa) {
-    printf("Le tessere assegnate sono le seguenti:\n");
     // Tieni traccia del nodo corrente
     tessera *corrente = testa;
     // Finche' non raggiungi la fine della lista
@@ -84,22 +75,6 @@ void stampa_tessere(tessera *testa) {
     printf("\n");
 }
 
-/*
-void stampa_tessere(tessera *tessere, int dimensione) {
-    printf("Le tessere assegnate sono le seguenti:\n");
-    for(int i=0; i<dimensione; i++) {
-        // Stampa le tessere in riga
-        printf("[%d|%d] ", tessere[i].estremo_sinistro, tessere[i].estremo_destro);
-    }
-    printf("\n");
-    for(int i=0; i<dimensione; i++) {
-        // Stampa indice corrispondente a ciascuna tessera
-        printf("  %d   ", i);
-    }
-    printf("\n");
-}
-*/
-
 tessera* trova_tessera(tessera *testa, int indice_tessera){
     tessera *corrente = testa;
     for(int i = 0; i < indice_tessera; i++){
@@ -108,62 +83,23 @@ tessera* trova_tessera(tessera *testa, int indice_tessera){
     return corrente;
 }
 
-// [1] Elimina la prima tessera
-//   x
-// [3|6] [1|6] [4|5]
-//   0     1     2
-
-// ----- [1|6] [4|5]
-// Imposta il puntatore della testa al successivo
-
-// [2] Elimina una tessera centrale
-//         x
-// [3|6] [1|6] [4|5]
-//   0     1     2
-
-// [3|6] ----- [4|5]
-//   0           1
-// La tessera precedente punta alla successiva
-
-// [3] Elimina l'ultima tessera
-//               x
-// [3|6] [1|6] [4|5]
-//   0     1     2
-
-// [3|6] [1|6] ------
-// La tessera precedente punta a NULL
-
-// [4] E' rimasta solo una tessera
-//   x
-// [3|6]
-//   0
-
-// -------
-// La testa punta a NULL
-
-void rimuovi_tessera(tessera **testa, tessera *da_rimuovere){
-    tessera *precedente = NULL;
+void rimuovi_tessera(tessera **testa, tessera *da_rimuovere) {
+    // Inizializzo entrambi i puntatori alla prima tessera della lista
+    tessera *precedente = *testa;
     tessera *corrente = *testa;
     while(corrente != da_rimuovere){
         precedente = corrente;
         corrente = corrente->successivo;
     }
-    // Voglio rimuovere la prima tessera della lista
-    if(corrente == *testa) {
-        // [1] Se sono presenti altri tessere
-        if(corrente->successivo != NULL) {
-            *testa = corrente->successivo;
-        } else {
-            // [4] Altrimenti e' l'unica della lista
-            *testa = NULL;
-        }
-    }
-    else if(corrente->successivo == NULL){ // [3]
-        precedente->successivo = NULL;
-    } else {  
-        // [2] Salva il nuovo nodo successivo
+    // Se devi rimuovere la prima tessera
+    if(precedente == corrente) {
+        // La testa viene spostata alla tessera successiva
+        *testa = precedente->successivo;
+    } else {
+        // Altrimenti salta fino alla successiva
         precedente->successivo = corrente->successivo;
     }
-    // Libera la memoria del nodo da rimuovere
-    free(da_rimuovere);
+    // La tessera da rimuovere e' ancora dentro la memoria dinamica
+    // Inizializzo il suo puntatore successivo
+    da_rimuovere->successivo = NULL;
 }
