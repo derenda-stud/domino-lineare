@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "controlli.h"
+#include "../librerie/controlli.h"
 
 int inserisci_numero_tessere() {
     int numero_tessere;
@@ -10,6 +10,7 @@ int inserisci_numero_tessere() {
             printf("Inserisci un numero valido: ");
         }
     } while(numero_tessere <= 0);
+    printf("Prova\n");
     return numero_tessere;
 }
 

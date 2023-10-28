@@ -1,24 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <Windows.h>
-#include "lista_concatenata.h"
-#include "controlli.h"
+#include <windows.h>
+#include "../librerie/lista_concatenata.h"
+#include "../librerie/controlli.h"
 
 /* Progetto Domino Lineare di Bertoncello Nicolas, Derevytskyy Alessandro */
-
-// Stampa una raffigurazione di tutte le possibili combinazioni di tessere
-void stampa_combinazioni_tessere();
 
 int main() {
     // Inizializza la generazione dei numeri casuali
     srand(time(NULL));
     
-    int numero_tessere = inserisci_numero_tessere();
-    
     // Creazione delle tessere nella mano del giocatore
     tessera *mano_giocatore = NULL;
+    // Creazione delle tessere sul piano di gioco
     tessera *piano_gioco = NULL;
+
+    int numero_tessere = inserisci_numero_tessere();
+
     genera_tessere(&mano_giocatore, numero_tessere);
     stampa_tessere(mano_giocatore);
     
@@ -38,13 +37,4 @@ int main() {
         stampa_tessere(mano_giocatore);
     }
     return 0;
-}
-
-void stampa_combinazioni_tessere() {
-    for(int i=1; i<=6; i++) {
-        for(int j=i; j<=6; j++) {
-            printf("[%d|%d]", i, j);
-        }
-        printf("\n");
-    }
 }

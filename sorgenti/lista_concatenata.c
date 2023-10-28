@@ -1,7 +1,7 @@
 // #include e definizioni di funzione
-#include<stdio.h>
-#include<stdlib.h>
-#include"lista_concatenata.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "../librerie/lista_concatenata.h"
 
 void genera_tessere(tessera **testa, int dimensione) {
     // Per ciascuna tessera del domino
