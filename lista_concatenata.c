@@ -72,7 +72,15 @@ void stampa_tessere(tessera *testa) {
         // Continua con la tessera successiva
         corrente = corrente->successivo;
     }
-    // Stampa anche gli indici...
+    printf("\n");
+    // Ricomincia dalla testa per stampare gli indici
+    corrente = testa;
+    // Tieni traccia del numero di tessere presenti nella lista
+    for(int indice_tessera=0; corrente != NULL; indice_tessera++) {
+        printf("  %d   ", indice_tessera);
+        // Continua con la tessera successiva
+        corrente = corrente->successivo;
+    }
     printf("\n");
 }
 
