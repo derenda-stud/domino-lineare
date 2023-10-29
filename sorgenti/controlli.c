@@ -13,14 +13,22 @@ int inserisci_numero_tessere() {
     return numero_tessere;
 }
 
-int inserisci_indice_tessera(int dimensione) {
-    int indice;
-    printf("Seleziona l'indice della tessera da posizionare: ");
+int inserisci_numero_compreso(char* messaggio, int minimo, int massimo) {
+    int numero;
+    printf("%s: ", messaggio);
     do {
-        scanf("%d", &indice);
-        if(indice < 0 || indice >= dimensione) {
-            printf("Seleziona un indice valido: ");
+        scanf("%d", &numero);
+        if(numero < minimo || numero > massimo) {
+            printf("Inserisci un numero valido: ");
         }
-    } while(indice < 0 || indice >= dimensione);
-    return indice;
+    } while(numero < minimo || numero > massimo);
+    return numero;
+}
+
+bool mossa_legale(tessera *trovata, int posizione, tessera *piano_gioco) {
+    /* In base alla posizione, controlla:
+        - 1 (sx) --> trovata->estremo_dx = testa->estremo_sx
+        - 2 (dx) --> coda->estremo_sx = trovata->estremo_sx
+    */
+    return true;
 }
