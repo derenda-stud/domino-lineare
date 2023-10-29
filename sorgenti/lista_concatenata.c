@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "../librerie/lista_concatenata.h"
 
-void genera_tessere(tessera **testa, int dimensione) {
+void genera_tessere(tessera *sentinella, int dimensione) {
     // Per ciascuna tessera del domino
     for(int i=0; i<dimensione; i++) {
         // Genera due numeri casuali per ciasun estremo della tessera
@@ -11,7 +11,7 @@ void genera_tessere(tessera **testa, int dimensione) {
         int casuale_destro = rand() % 6 + 1;
         // Aggiungi una nuova tessera
         tessera* nuova = crea_tessera(casuale_sinistro, casuale_destro);
-        inserimento_in_coda(testa, nuova);
+        inserimento_in_coda(sentinella, nuova);
     }
 }
 
@@ -23,39 +23,33 @@ tessera* crea_tessera(int estremo_sinistro, int estremo_destro) {
     nuova_tessera->estremo_destro = estremo_destro;
     // Inizializzo il valore del puntatore successivo
     nuova_tessera->successivo = NULL;
-    // Ritorna il puntatore della nuova tessera creata
+    // Ritorna il puntatore della tessera appena creata
     return nuova_tessera;
 }
 
-void inserimento_in_testa(tessera **testa, tessera *da_inserire) {
-    // Aggiungi la tessera in testa
-    da_inserire->successivo = *testa;
-    // Aggiorna il puntatore della testa
-    *testa = da_inserire;
+void inserimento_in_testa(tessera *sentinella, tessera *da_inserire) {
+    // Imposta il puntatore successivo alla prima tessera corrente
+    da_inserire->successivo = sentinella->successivo;
+    // Aggiorna la tessera in testa
+    sentinella->successivo = da_inserire;
 }
 
-void inserimento_in_coda(tessera **testa, tessera *da_inserire) {
-    // Arrivato alla fine della lista e' necessario conoscere il precedente
-    tessera *precedente;
+void inserimento_in_coda(tessera *sentinella, tessera *da_inserire) {
+    // Il nodo precedente e' usato nella fase di assegnamento
+    tessera *precedente = sentinella;
     // Scorri la lista usando il nodo corrente
-    tessera *corrente = *testa;
+    tessera *corrente = sentinella;
     while(corrente != NULL) {
         precedente = corrente;
         corrente = corrente->successivo;
     }
-    // Se non sono ancora presenti tessere nella lista 
-    if(*testa == NULL) {
-        // Inserisci il nodo come testa
-        *testa = da_inserire;
-    } else {
-        // Altrimenti inseriscilo in coda alla lista
-        precedente->successivo = da_inserire;
-    }
+    // Inserisci la tessera in coda alla lista
+    precedente->successivo = da_inserire;
 }
 
-void stampa_tessere(tessera *testa) {
+void stampa_tessere(tessera *sentinella) {
     // Tieni traccia del nodo corrente
-    tessera *corrente = testa;
+    tessera *corrente = sentinella->successivo;
     // Finche' non raggiungi la fine della lista
     while(corrente != NULL) {
         // Stampa la tessera corrente
@@ -65,7 +59,7 @@ void stampa_tessere(tessera *testa) {
     }
     printf("\n");
     // Ricomincia dalla testa per stampare gli indici
-    corrente = testa;
+    corrente = sentinella->successivo;
     // Tieni traccia del numero di tessere presenti nella lista
     for(int indice_tessera=0; corrente != NULL; indice_tessera++) {
         printf("  %d   ", indice_tessera);
@@ -75,31 +69,29 @@ void stampa_tessere(tessera *testa) {
     printf("\n");
 }
 
-tessera* trova_tessera(tessera *testa, int indice_tessera){
-    tessera *corrente = testa;
+tessera* trova_tessera(tessera *sentinella, int indice_tessera){
+    // Inizializza il valore della prima tessera valida
+    tessera *da_trovare = sentinella->successivo;
+    // Continua finche' non raggiungi l'indice richiesto
     for(int i = 0; i < indice_tessera; i++){
-        corrente = corrente->successivo;
+        da_trovare = da_trovare->successivo;
     }
-    return corrente;
+    // Ritorna la tessera trovata
+    return da_trovare;
 }
 
-void rimuovi_tessera(tessera **testa, tessera *da_rimuovere) {
-    // Inizializzo entrambi i puntatori alla prima tessera della lista
-    tessera *precedente = *testa;
-    tessera *corrente = *testa;
+void rimuovi_tessera(tessera *sentinella, tessera *da_rimuovere) {
+    // Inizializzo entrambi i puntatori alla tessera sentinella
+    tessera *precedente = sentinella;
+    tessera *corrente = sentinella;
+    // Scorri la lista finche' non raggiungi la tessera da rimuovere
     while(corrente != da_rimuovere){
         precedente = corrente;
         corrente = corrente->successivo;
     }
-    // Se devi rimuovere la prima tessera
-    if(precedente == corrente) {
-        // La testa viene spostata alla tessera successiva
-        *testa = precedente->successivo;
-    } else {
-        // Altrimenti salta fino alla successiva
-        precedente->successivo = corrente->successivo;
-    }
-    // La tessera da rimuovere e' ancora dentro la memoria dinamica
+    // Per rimuoverla, collega la precedente con la successiva
+    precedente->successivo = corrente->successivo;
+    // NOTA: La tessera da rimuovere e' ancora dentro la memoria dinamica
     // Inizializzo il suo puntatore successivo
     da_rimuovere->successivo = NULL;
 }
