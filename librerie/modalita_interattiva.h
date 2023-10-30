@@ -3,5 +3,7 @@
 #include "lista_concatenata.h"
 
 void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco, int numero_tessere);
+//conta i punti effettuati dal giocatore
+int conta_punteggio(int numero_tessere, tessera *piano_gioco);
 
 #endif

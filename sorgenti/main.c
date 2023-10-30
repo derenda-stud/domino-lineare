@@ -23,6 +23,9 @@ int main() {
     stampa_tessere(mano_giocatore);
     
     turno_giocatore(mano_giocatore, piano_gioco, numero_tessere);
+    int punteggio = conta_punteggio(numero_tessere, piano_gioco);
+
+    printf("hai effettuato %d punti!", punteggio);
     
     return 0;
 }
