@@ -16,14 +16,17 @@ int main() {
     tessera *mano_giocatore = crea_tessera(0, 0);
     // Creazione delle tessere sul piano di gioco
     tessera *piano_gioco = crea_tessera(0, 0);
+
+    int *n_tessere_piano = malloc(sizeof(int));
+    *n_tessere_piano = 0;
     
     int numero_tessere = inserisci_numero_tessere();
     
     genera_tessere(mano_giocatore, numero_tessere);
     stampa_tessere(mano_giocatore);
     
-    turno_giocatore(mano_giocatore, piano_gioco, numero_tessere);
-    int punteggio = conta_punteggio(numero_tessere, piano_gioco);
+    turno_giocatore(mano_giocatore, piano_gioco, numero_tessere, n_tessere_piano);
+    int punteggio = conta_punteggio(n_tessere_piano, piano_gioco);
 
     printf("hai effettuato %d punti!", punteggio);
     

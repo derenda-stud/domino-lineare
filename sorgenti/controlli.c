@@ -25,10 +25,25 @@ int inserisci_numero_compreso(char* messaggio, int minimo, int massimo) {
     return numero;
 }
 
-bool mossa_legale(tessera *trovata, int posizione, tessera *piano_gioco) {
+
+/*trovata => tessera da inserire
+  posizione => [1] sx, [2] dx
+  piano_gioco => lista tessere all'interno del piano di gioco.
+  n_tessere_piano => numero delle tessere presenti nel piano di gioco.*/
+bool mossa_legale(tessera *trovata, int posizione, tessera *piano_gioco, int *n_tessere_piano) {
     /* In base alla posizione, controlla:
         - 1 (sx) --> trovata->estremo_dx = testa->estremo_sx
         - 2 (dx) --> coda->estremo_sx = trovata->estremo_sx
     */
-    return true;
+   tessera *posizionata = piano_gioco->successivo;
+    if(posizione == 1 && *n_tessere_piano != 0) {
+            return posizionata->estremo_sinistro == trovata->estremo_destro ? true : false;
+    } else if(posizione == 2 && *n_tessere_piano != 0) {
+        for(int i = 0; i < *n_tessere_piano; i++){
+            posizionata = posizionata->successivo;
+        }
+        return posizionata->estremo_destro == trovata->estremo_sinistro ? true : false;
+    } else {
+        return true;
+    }
 }

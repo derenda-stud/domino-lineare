@@ -4,7 +4,7 @@
 #include "../librerie/controlli.h"
 #include "../librerie/modalita_interattiva.h"
 
-void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco, int numero_tessere) {
+void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco, int numero_tessere, int *n_tessere_piano) {
     bool fine = false;
     // Continua finche' non rimangono tessere in mano
     // TODO: oppure quando non sono piu' disponibili mosse legali
@@ -22,7 +22,7 @@ void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco, int numero_t
                 // Trova la tessere da prelevare dalla mano del giocatore
                 tessera *trovata = trova_tessera(mano_giocatore, indice_tessera);
                 posizione = inserisci_numero_compreso("Dove vuoi inserire la tessera? (1 per sx / 2 per dx): ", 1, 2);
-                if(mossa_legale(trovata, posizione, piano_gioco)) {
+                if(mossa_legale(trovata, posizione, piano_gioco, n_tessere_piano)) {
                     rimuovi_tessera(mano_giocatore, trovata);
                     // Aggiungi la tessera in base alla posizione selezionata
                     switch(posizione) {
@@ -33,6 +33,7 @@ void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco, int numero_t
                             inserimento_in_coda(piano_gioco, trovata);
                         } break;
                     }
+                    *n_tessere_piano += 1;
                 } else {
                     printf("Mossa non legale, prova con un'altra tessera\n");
                 }
@@ -57,9 +58,9 @@ void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco, int numero_t
     }
 }
 
-int conta_punteggio(int numero_tessere, tessera *piano_gioco){
+int conta_punteggio(int *n_tessere_piano, tessera *piano_gioco){
     int punteggio = 0;
-    for(int i = 0; i < numero_tessere; i++){
+    for(int i = 0; i < *n_tessere_piano; i++){
         tessera *trovata = trova_tessera(piano_gioco, i);
         punteggio += trovata->estremo_destro + trovata->estremo_sinistro;
     }
