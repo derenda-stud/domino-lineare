@@ -38,6 +38,8 @@ void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco, int numero_t
             case 2: {
                 indice_tessera = inserisci_numero_compreso("Seleziona l'indice della tessera da ruotare", 0, numero_tessere - 1);    
                 // Ruota la tessere presente ad un determinato indice
+                tessera *trovata = trova_tessera(mano_giocatore, indice_tessera);
+                ruota_tessera(mano_giocatore, trovata);
             } break;
         }
         // Stampa delle tessere presenti in entrambe le liste

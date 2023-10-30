@@ -10,9 +10,10 @@
                 "--pedantic",
                 "-Wall",
                 "-g",
-                "controlli.c",
-                "lista_concatenata.c",
-                "main.c",
+                "..\\sorgenti\\controlli.c",
+                "..\\sorgenti\\lista_concatenata.c",
+                "..\\sorgenti\\main.c",
+                "..\\sorgenti\\modalita_interattiva.c",
                 "-o",
                 "${fileDirname}\\iap.exe"
             ],

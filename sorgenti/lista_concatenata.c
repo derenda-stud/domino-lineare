@@ -95,3 +95,14 @@ void rimuovi_tessera(tessera *sentinella, tessera *da_rimuovere) {
     // Inizializzo il suo puntatore successivo
     da_rimuovere->successivo = NULL;
 }
+
+//ruota la tessera passata come parametro.
+void ruota_tessera(tessera *sentinella, tessera *da_ruotare){
+    tessera *corrente = sentinella;
+    while(corrente != da_ruotare){
+        corrente = corrente->successivo;
+    }
+    int temp = corrente->estremo_destro;
+    corrente->estremo_destro = corrente->estremo_sinistro;
+    corrente->estremo_sinistro = temp;
+}

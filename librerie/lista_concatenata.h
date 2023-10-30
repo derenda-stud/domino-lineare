@@ -21,5 +21,7 @@ void stampa_tessere(tessera *sentinella);
 tessera* trova_tessera(tessera *sentinella, int indice_tessera);
 // Rimuovi una tessera dalla lista
 void rimuovi_tessera(tessera *sentinella, tessera *da_rimuovere);
+//ruota la tessera nella mano del giocatore
+void ruota_tessera(tessera *sentinella, tessera *da_ruotare);
 
 #endif
