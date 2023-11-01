@@ -1,21 +1,22 @@
 // #include e definizioni di funzione
+#include "../librerie/lista_concatenata.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "../librerie/lista_concatenata.h"
 
 void genera_tessere(tessera *sentinella, int dimensione) {
     // Per ciascuna tessera del domino
-    for(int i=0; i<dimensione; i++) {
+    for (int i = 0; i < dimensione; i++) {
         // Genera due numeri casuali per ciasun estremo della tessera
         int casuale_sinistro = rand() % 6 + 1;
         int casuale_destro = rand() % 6 + 1;
         // Aggiungi una nuova tessera
-        tessera* nuova = crea_tessera(casuale_sinistro, casuale_destro);
+        tessera *nuova = crea_tessera(casuale_sinistro, casuale_destro);
         inserimento_in_coda(sentinella, nuova);
     }
 }
 
-tessera* crea_tessera(int estremo_sinistro, int estremo_destro) {
+tessera *crea_tessera(int estremo_sinistro, int estremo_destro) {
     // Creazione della tessera con allocazione dinamica della memoria
     tessera *nuova_tessera = malloc(sizeof(tessera));
     // Imposta come valori della tessera quelli passati dal chiamante
@@ -39,7 +40,7 @@ void inserimento_in_coda(tessera *sentinella, tessera *da_inserire) {
     tessera *precedente = sentinella;
     // Scorri la lista usando il nodo corrente
     tessera *corrente = sentinella;
-    while(corrente != NULL) {
+    while (corrente != NULL) {
         precedente = corrente;
         corrente = corrente->successivo;
     }
@@ -51,7 +52,7 @@ void stampa_tessere(tessera *sentinella) {
     // Tieni traccia del nodo corrente
     tessera *corrente = sentinella->successivo;
     // Finche' non raggiungi la fine della lista
-    while(corrente != NULL) {
+    while (corrente != NULL) {
         // Stampa la tessera corrente
         printf("[%d|%d] ", corrente->estremo_sinistro, corrente->estremo_destro);
         // Continua con la tessera successiva
@@ -61,7 +62,7 @@ void stampa_tessere(tessera *sentinella) {
     // Ricomincia dalla testa per stampare gli indici
     corrente = sentinella->successivo;
     // Tieni traccia del numero di tessere presenti nella lista
-    for(int indice_tessera=0; corrente != NULL; indice_tessera++) {
+    for (int indice_tessera = 0; corrente != NULL; indice_tessera++) {
         printf("  %d   ", indice_tessera);
         // Continua con la tessera successiva
         corrente = corrente->successivo;
@@ -69,11 +70,11 @@ void stampa_tessere(tessera *sentinella) {
     printf("\n");
 }
 
-tessera* trova_tessera(tessera *sentinella, int indice_tessera){
+tessera *trova_tessera(tessera *sentinella, int indice_tessera) {
     // Inizializza il valore della prima tessera valida
     tessera *da_trovare = sentinella->successivo;
     // Continua finche' non raggiungi l'indice richiesto
-    for(int i = 0; i < indice_tessera; i++){
+    for (int i = 0; i < indice_tessera; i++) {
         da_trovare = da_trovare->successivo;
     }
     // Ritorna la tessera trovata
@@ -85,7 +86,7 @@ void rimuovi_tessera(tessera *sentinella, tessera *da_rimuovere) {
     tessera *precedente = sentinella;
     tessera *corrente = sentinella;
     // Scorri la lista finche' non raggiungi la tessera da rimuovere
-    while(corrente != da_rimuovere){
+    while (corrente != da_rimuovere) {
         precedente = corrente;
         corrente = corrente->successivo;
     }
@@ -96,13 +97,9 @@ void rimuovi_tessera(tessera *sentinella, tessera *da_rimuovere) {
     da_rimuovere->successivo = NULL;
 }
 
-//ruota la tessera passata come parametro.
-void ruota_tessera(tessera *sentinella, tessera *da_ruotare){
-    tessera *corrente = sentinella;
-    while(corrente != da_ruotare){
-        corrente = corrente->successivo;
-    }
-    int temp = corrente->estremo_destro;
-    corrente->estremo_destro = corrente->estremo_sinistro;
-    corrente->estremo_sinistro = temp;
+void ruota_tessera(tessera *sentinella, tessera *da_ruotare) {
+    // Scambia il valore dei due estremi della tessera
+    int temp = da_ruotare->estremo_destro;
+    da_ruotare->estremo_destro = da_ruotare->estremo_sinistro;
+    da_ruotare->estremo_sinistro = temp;
 }

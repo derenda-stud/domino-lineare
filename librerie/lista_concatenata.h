@@ -10,7 +10,7 @@ typedef struct struct_tessera {
 // Genera delle tessere dai valori casuali dopo l'inserimento dell'utente
 void genera_tessere(tessera *sentinella, int dimensione);
 // Crea una nuova tessera assegnando una locazione nella memoria dinamica
-tessera* crea_tessera(int estremo_sinistro, int estremo_destro);
+tessera *crea_tessera(int estremo_sinistro, int estremo_destro);
 // Inserisci una nuova tessera in testa alla lista
 void inserimento_in_testa(tessera *sentinella, tessera *da_inserire);
 // Inserisci una nuova tessera in coda alla lista
@@ -18,10 +18,10 @@ void inserimento_in_coda(tessera *sentinella, tessera *da_inserire);
 // Stampa tutte le tessere con i corrispettivi valori
 void stampa_tessere(tessera *sentinella);
 // Restituisci la tessera di una lista presente ad un certo indice
-tessera* trova_tessera(tessera *sentinella, int indice_tessera);
+tessera *trova_tessera(tessera *sentinella, int indice_tessera);
 // Rimuovi una tessera dalla lista
 void rimuovi_tessera(tessera *sentinella, tessera *da_rimuovere);
-//ruota la tessera nella mano del giocatore
+// Ruota la tessera nella mano del giocatore
 void ruota_tessera(tessera *sentinella, tessera *da_ruotare);
 
 #endif

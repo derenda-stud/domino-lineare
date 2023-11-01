@@ -1,31 +1,33 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "../librerie/controlli.h"
 #include "../librerie/modalita_interattiva.h"
 
-void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco, int numero_tessere) {
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../librerie/controlli.h"
+
+void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco) {
     bool fine = false;
     // Continua finche' non rimangono tessere in mano
     // TODO: oppure quando non sono piu' disponibili mosse legali
-    while(mano_giocatore->successivo != NULL && !fine) {
+    while (mano_giocatore->successivo != NULL && !fine) {
         // Chiedi all'utente se vuole posizionare/ruotare una tessera
         printf(" - Premi 1 per posizionare una tessera\n");
         printf(" - Premi 2 per ruotare una tessera\n");
         printf(" - Premi 3 per finire la partita\n");
         int scelta, indice_tessera, posizione;
         scelta = inserisci_numero_compreso("Seleziona un'opzione", 1, 3);
-        switch(scelta) {
+        switch (scelta) {
             // Seleziona una tessera
             case 1: {
-                indice_tessera = inserisci_numero_compreso("Seleziona l'indice della tessera da posizionare", 0, numero_tessere - 1);
+                indice_tessera = inserisci_numero_compreso("Seleziona l'indice della tessera da posizionare", 0, mano_giocatore->estremo_destro - 1);
                 // Trova la tessere da prelevare dalla mano del giocatore
                 tessera *trovata = trova_tessera(mano_giocatore, indice_tessera);
                 posizione = inserisci_numero_compreso("Dove vuoi inserire la tessera? (1 per sx / 2 per dx): ", 1, 2);
-                if(mossa_legale(trovata, posizione, piano_gioco)) {
+                if (mossa_legale(trovata, posizione, piano_gioco)) {
                     rimuovi_tessera(mano_giocatore, trovata);
                     // Aggiungi la tessera in base alla posizione selezionata
-                    switch(posizione) {
+                    switch (posizione) {
                         case 1: {
                             inserimento_in_testa(piano_gioco, trovata);
                         } break;
@@ -33,21 +35,22 @@ void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco, int numero_t
                             inserimento_in_coda(piano_gioco, trovata);
                         } break;
                     }
+                    mano_giocatore->estremo_destro--;
                 } else {
                     printf("Mossa non legale, prova con un'altra tessera\n");
                 }
             } break;
             // Ruota una tessera
             case 2: {
-                indice_tessera = inserisci_numero_compreso("Seleziona l'indice della tessera da ruotare", 0, numero_tessere - 1);    
+                indice_tessera = inserisci_numero_compreso("Seleziona l'indice della tessera da ruotare", 0, mano_giocatore->estremo_destro - 1);
                 // Ruota la tessere presente ad un determinato indice
                 tessera *trovata = trova_tessera(mano_giocatore, indice_tessera);
                 ruota_tessera(mano_giocatore, trovata);
             } break;
-            //finisci la partita
+            // finisci la partita
             case 3: {
                 fine = true;
-            }
+            } break;
         }
         // Stampa delle tessere presenti in entrambe le liste
         printf("Tessere sul piano di gioco:\n");
@@ -57,12 +60,12 @@ void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco, int numero_t
     }
 }
 
-int conta_punteggio(tessera *piano_gioco){
+int conta_punteggio(tessera *piano_gioco) {
+    tessera *corrente = piano_gioco->successivo;
     int punteggio = 0;
-    piano_gioco = piano_gioco->successivo;
-    while(piano_gioco != NULL){
-        punteggio += piano_gioco->estremo_destro + piano_gioco->estremo_sinistro;
-        piano_gioco = piano_gioco->successivo;
+    while (corrente != NULL) {
+        punteggio += corrente->estremo_destro + corrente->estremo_sinistro;
+        corrente = corrente->successivo;
     }
     return punteggio;
 }
