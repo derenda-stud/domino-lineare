@@ -7,16 +7,13 @@
 #include "../librerie/controlli.h"
 
 void stampa_turno(tessera *mano_giocatore, tessera *piano_gioco) {
-    bool fine = false;
-    // Continua finche' non rimangono tessere in mano
-    // TODO: oppure quando non sono piu' disponibili mosse legali
-    while (mano_giocatore->successivo != NULL && !fine) {
+    // Continua finche' rimangono tessere in mano e siano disponibili mosse legali
+    while (mano_giocatore->successivo != NULL && mosse_disponibili(mano_giocatore, piano_gioco)) {
         // Chiedi all'utente se vuole posizionare/ruotare una tessera
         printf(" - Premi 1 per posizionare una tessera\n");
         printf(" - Premi 2 per ruotare una tessera\n");
-        printf(" - Premi 3 per finire la partita\n");
         // Inserisci la prossima mossa da effettuare
-        inserisci_scelta(mano_giocatore, piano_gioco, &fine);
+        inserisci_scelta(mano_giocatore, piano_gioco);
         // Stampa delle tessere presenti in entrambe le liste
         printf("Tessere sul piano di gioco:\n");
         stampa_tessere(piano_gioco);
@@ -25,8 +22,8 @@ void stampa_turno(tessera *mano_giocatore, tessera *piano_gioco) {
     }
 }
 
-void inserisci_scelta(tessera *mano_giocatore, tessera *piano_gioco, bool *fine) {
-    int scelta = inserisci_numero_compreso("Seleziona un'opzione", 1, 3);
+void inserisci_scelta(tessera *mano_giocatore, tessera *piano_gioco) {
+    int scelta = inserisci_numero_compreso("Seleziona un'opzione", 1, 2);
     switch (scelta) {
         case 1: {
             // Inserisci la tessera presente ad un determinato indice
@@ -35,10 +32,6 @@ void inserisci_scelta(tessera *mano_giocatore, tessera *piano_gioco, bool *fine)
         case 2: {
             // Ruota la tessere presente ad un determinato indice
             ruota_tessera(mano_giocatore, inserisci_indice(mano_giocatore, "Seleziona l'indice della tessera da ruotare"));
-        } break;
-        // finisci la partita
-        case 3: {
-            *fine = true;
         } break;
     }
 }
