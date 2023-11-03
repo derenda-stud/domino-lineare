@@ -6,7 +6,7 @@
 
 #include "../librerie/controlli.h"
 
-void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco) {
+void stampa_turno(tessera *mano_giocatore, tessera *piano_gioco) {
     bool fine = false;
     // Continua finche' non rimangono tessere in mano
     // TODO: oppure quando non sono piu' disponibili mosse legali
@@ -15,49 +15,74 @@ void turno_giocatore(tessera *mano_giocatore, tessera *piano_gioco) {
         printf(" - Premi 1 per posizionare una tessera\n");
         printf(" - Premi 2 per ruotare una tessera\n");
         printf(" - Premi 3 per finire la partita\n");
-        int scelta, indice_tessera, posizione;
-        scelta = inserisci_numero_compreso("Seleziona un'opzione", 1, 3);
-        switch (scelta) {
-            // Seleziona una tessera
-            case 1: {
-                indice_tessera = inserisci_numero_compreso("Seleziona l'indice della tessera da posizionare", 0, mano_giocatore->estremo_destro - 1);
-                // Trova la tessere da prelevare dalla mano del giocatore
-                tessera *trovata = trova_tessera(mano_giocatore, indice_tessera);
-                posizione = inserisci_numero_compreso("Dove vuoi inserire la tessera? (1 per sx / 2 per dx): ", 1, 2);
-                if (mossa_legale(trovata, posizione, piano_gioco)) {
-                    rimuovi_tessera(mano_giocatore, trovata);
-                    // Aggiungi la tessera in base alla posizione selezionata
-                    switch (posizione) {
-                        case 1: {
-                            inserimento_in_testa(piano_gioco, trovata);
-                        } break;
-                        case 2: {
-                            inserimento_in_coda(piano_gioco, trovata);
-                        } break;
-                    }
-                    mano_giocatore->estremo_destro--;
-                } else {
-                    printf("Mossa non legale, prova con un'altra tessera\n");
-                }
-            } break;
-            // Ruota una tessera
-            case 2: {
-                indice_tessera = inserisci_numero_compreso("Seleziona l'indice della tessera da ruotare", 0, mano_giocatore->estremo_destro - 1);
-                // Ruota la tessere presente ad un determinato indice
-                tessera *trovata = trova_tessera(mano_giocatore, indice_tessera);
-                ruota_tessera(mano_giocatore, trovata);
-            } break;
-            // finisci la partita
-            case 3: {
-                fine = true;
-            } break;
-        }
+        // Inserisci la prossima mossa da effettuare
+        inserisci_scelta(mano_giocatore, piano_gioco, &fine);
         // Stampa delle tessere presenti in entrambe le liste
         printf("Tessere sul piano di gioco:\n");
         stampa_tessere(piano_gioco);
         printf("Tessere nella mano del giocatore:\n");
         stampa_tessere(mano_giocatore);
     }
+}
+
+void inserisci_scelta(tessera *mano_giocatore, tessera *piano_gioco, bool *fine) {
+    int scelta = inserisci_numero_compreso("Seleziona un'opzione", 1, 3);
+    switch (scelta) {
+        case 1: {
+            // Inserisci la tessera presente ad un determinato indice
+            seleziona_tessera(mano_giocatore, piano_gioco);
+        } break;
+        case 2: {
+            // Ruota la tessere presente ad un determinato indice
+            ruota_tessera(mano_giocatore, inserisci_indice(mano_giocatore, "Seleziona l'indice della tessera da ruotare"));
+        } break;
+        // finisci la partita
+        case 3: {
+            *fine = true;
+        } break;
+    }
+}
+
+void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
+    // Trova la tessere da prelevare dalla mano del giocatore
+    tessera *trovata = inserisci_indice(mano_giocatore, "Seleziona l'indice della tessera da posizionare");
+    // Se il piano di gioco e' vuoto non richiedere la posizione nell'inserimento
+    if(piano_gioco->successivo == NULL) {
+        // Impostiamo come predefinito l'inserimento in testa
+        aggiungi_tessera(mano_giocatore, piano_gioco, trovata, 1);
+        return;
+    }
+    // Seleziona se inserire la tessera a sinistra/destra
+    int posizione = inserisci_numero_compreso("Dove vuoi inserire la tessera? (1 per sx / 2 per dx): ", 1, 2);
+    // Controlla che la mossa effettuata sia legale
+    if (!mossa_legale(trovata, posizione, piano_gioco)) {
+        printf("Mossa non legale, prova con un'altra tessera\n");
+        return;
+    }
+    // Aggiungi la tessera alla posizione indicata
+    aggiungi_tessera(mano_giocatore, piano_gioco, trovata, posizione);
+}
+
+tessera *inserisci_indice(tessera *mano_giocatore, char *messaggio) {
+    int indice_tessera = inserisci_numero_compreso(messaggio, 0, mano_giocatore->estremo_destro - 1);
+    return trova_tessera(mano_giocatore, indice_tessera);
+}
+
+void aggiungi_tessera(tessera *mano_giocatore, tessera *piano_gioco, tessera *trovata, int posizione) {
+    // Rimuovi la tessere trovata dalla mano del giocatore
+    rimuovi_tessera(mano_giocatore, trovata);
+    // Aggiungi la tessera in base alla posizione selezionata
+    switch (posizione) {
+        case 1: {
+            inserimento_in_testa(piano_gioco, trovata);
+        } break;
+        case 2: {
+            inserimento_in_coda(piano_gioco, trovata);
+        } break;
+    }
+    // Aggiorna il numero corrente di tessere su entrambe le liste
+    mano_giocatore->estremo_destro--;
+    piano_gioco->estremo_destro++;
 }
 
 int conta_punteggio(tessera *piano_gioco) {

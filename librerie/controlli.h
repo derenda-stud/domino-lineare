@@ -10,6 +10,6 @@ int inserisci_numero_tessere();
 // Chiedi all'utente un numero compreso tra due estremi massimo
 int inserisci_numero_compreso(char *messaggio, int minimo, int massimo);
 // Controlla che sia stata selezionata una mossa legale
-bool mossa_legale(tessera *trovata, int posizione, tessera *piano_gioco);
+bool mossa_legale(tessera *da_inserire, int posizione, tessera *piano_gioco);
 
 #endif

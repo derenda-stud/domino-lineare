@@ -26,26 +26,16 @@ int inserisci_numero_compreso(char *messaggio, int minimo, int massimo) {
     return numero;
 }
 
-/*trovata => tessera da inserire
-  posizione => [1] sx, [2] dx
-  piano_gioco => lista tessere all'interno del piano di gioco.
-  n_tessere_piano => numero delle tessere presenti nel piano di gioco.*/
-bool mossa_legale(tessera *trovata, int posizione, tessera *piano_gioco) {
-    /* In base alla posizione, controlla:
-        - 1 (sx) --> trovata->estremo_dx = testa->estremo_sx
-        - 2 (dx) --> coda->estremo_sx = trovata->estremo_sx
-    */
-    tessera *posizionata = piano_gioco->successivo;
+// Controlla che l'estremo della tessera da inserire combaci con quello sul piano di gioco
+bool mossa_legale(tessera *da_inserire, int posizione, tessera *piano_gioco) {
     // Quando il piano di gioco e' vuoto non sono necessari controlli
-    if(posizionata == NULL) {
+    if(piano_gioco->successivo == NULL) {
         return true;
     }
-    if (posizione == 1) {
-        return posizionata->estremo_sinistro == trovata->estremo_destro ? true : false;
-    } else {
-        while (posizionata->successivo != NULL) {
-            posizionata = posizionata->successivo;
-        }
-        return posizionata->estremo_destro == trovata->estremo_sinistro ? true : false;
+    // [1] Confronta la tessera da interire con quella in testa
+    if(posizione == 1) {
+        return da_inserire->estremo_destro == trova_tessera(piano_gioco, 0)->estremo_sinistro;
     }
+    // [2] Confronta la tessera in coda con quella da inserire
+    return trova_tessera(piano_gioco, piano_gioco->estremo_destro - 1)->estremo_destro == da_inserire->estremo_sinistro;
 }
