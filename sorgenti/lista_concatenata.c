@@ -97,7 +97,7 @@ void rimuovi_tessera(tessera *sentinella, tessera *da_rimuovere) {
     da_rimuovere->successivo = NULL;
 }
 
-void ruota_tessera(tessera *sentinella, tessera *da_ruotare) {
+void ruota_tessera(tessera *da_ruotare) {
     // Scambia il valore dei due estremi della tessera
     int temp = da_ruotare->estremo_destro;
     da_ruotare->estremo_destro = da_ruotare->estremo_sinistro;

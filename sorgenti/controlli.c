@@ -28,11 +28,7 @@ int inserisci_numero_compreso(char *messaggio, int minimo, int massimo) {
 
 // Controlla che l'estremo della tessera da inserire combaci con quello sul piano di gioco
 bool mossa_legale(tessera *da_inserire, int posizione, tessera *piano_gioco) {
-    // Quando il piano di gioco e' vuoto non sono necessari controlli
-    if(piano_gioco->successivo == NULL) {
-        return true;
-    }
-    // [1] Confronta la tessera da interire con quella in testa
+    // [1] Confronta la tessera da inserire con quella in testa
     if(posizione == 1) {
         return da_inserire->estremo_destro == trova_tessera(piano_gioco, 0)->estremo_sinistro;
     }

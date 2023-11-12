@@ -32,7 +32,7 @@ void inserisci_scelta(tessera *mano_giocatore, tessera *piano_gioco) {
         } break;
         case 2: {
             // Ruota la tessere presente ad un determinato indice
-            ruota_tessera(mano_giocatore, inserisci_indice(mano_giocatore, "ruotare"));
+            ruota_tessera(inserisci_indice(mano_giocatore, "ruotare"));
         } break;
     }
 }
