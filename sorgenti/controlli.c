@@ -41,16 +41,15 @@ bool mosse_disponibili(tessera *mano_giocatore, tessera *piano_gioco) {
     if(piano_gioco->successivo == NULL) {
         return true;
     }
-    // Memorizza gli estremi delle tessere in testa e in coda
-    int estremo_in_testa = trova_tessera(piano_gioco, 0)->estremo_sinistro;
-    int estremo_in_coda = trova_tessera(piano_gioco, piano_gioco->estremo_destro - 1)->estremo_destro;
-    // Per ciascuna tessera nella mano del giocatore
+    tessera da_controllare;
+    if(piano_gioco->estremo_destro == 1) da_controllare = *piano_gioco->successivo;
+    else{
+        da_controllare.estremo_sinistro = trova_tessera(piano_gioco, 0)->estremo_sinistro;
+        da_controllare.estremo_destro = trova_tessera(piano_gioco, piano_gioco->estremo_destro - 1)->estremo_destro;
+    }
     tessera *corrente = mano_giocatore->successivo;
     while(corrente != NULL) {
-        // Confronta che il valore degli estremi corrisponda con quella in testa e in coda
-        if(estremi_corrispondono(corrente, estremo_in_testa) || estremi_corrispondono(corrente, estremo_in_coda)) {
-            return true;
-        }
+        if(estremi_corrispondono(corrente, da_controllare) != 0) return true;
         // Continua con la tessera successiva
         corrente = corrente->successivo;
     }
@@ -58,6 +57,16 @@ bool mosse_disponibili(tessera *mano_giocatore, tessera *piano_gioco) {
     return false;
 }
 
-bool estremi_corrispondono(tessera *selezionata, int valore) {
-    return (selezionata->estremo_sinistro == valore || selezionata->estremo_destro == valore);
+/* cod -> xy    [x-> 1 testa | 2 coda]  [y-> 0 normale | 1 ruota]   [0-> nessun estremo corrisponde in alcuna combinazione]
+   [1|3]   [3|6] -> 10  inserimento in testa
+   [6|1]   [3|6] -> 20  inserimento in coda
+   
+   [3|1]   [3|6] -> 11  inserimento in testa (tessera ruotata)
+   [1|6]   [3|6] -> 21  inserimento in coda (tessera ruotata)*/
+int estremi_corrispondono(tessera *selezionata, tessera da_controllare) {
+    if (selezionata->estremo_destro == da_controllare.estremo_sinistro) return 10;
+    else if (selezionata->estremo_sinistro == da_controllare.estremo_destro) return 20;
+    else if (selezionata->estremo_sinistro == da_controllare.estremo_sinistro) return 11;
+    else if (selezionata->estremo_destro == da_controllare.estremo_destro) return 21;
+    else return 0;
 }

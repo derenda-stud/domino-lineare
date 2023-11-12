@@ -14,6 +14,6 @@ bool mossa_legale(tessera *da_inserire, int posizione, tessera *piano_gioco);
 // Controlla se sono rimaste mosse disponibili
 bool mosse_disponibili(tessera *mano_giocatore, tessera *piano_gioco);
 // Confronta gli estremi della tessera selezionata con un determinato valore
-bool estremi_corrispondono(tessera *selezionata, int valore);
+int estremi_corrispondono(tessera *selezionata, tessera *da_controllare);
 
 #endif
