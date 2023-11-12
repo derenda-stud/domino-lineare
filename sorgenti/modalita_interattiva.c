@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../librerie/controlli.h"
 
@@ -31,14 +32,14 @@ void inserisci_scelta(tessera *mano_giocatore, tessera *piano_gioco) {
         } break;
         case 2: {
             // Ruota la tessere presente ad un determinato indice
-            ruota_tessera(mano_giocatore, inserisci_indice(mano_giocatore, "Seleziona l'indice della tessera da ruotare"));
+            ruota_tessera(mano_giocatore, inserisci_indice(mano_giocatore, "ruotare"));
         } break;
     }
 }
 
 void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
     // Trova la tessere da prelevare dalla mano del giocatore
-    tessera *trovata = inserisci_indice(mano_giocatore, "Seleziona l'indice della tessera da posizionare");
+    tessera *trovata = inserisci_indice(mano_giocatore, "posizionare");
     // Se il piano di gioco e' vuoto non richiedere la posizione nell'inserimento
     if(piano_gioco->successivo == NULL) {
         // Impostiamo come predefinito l'inserimento in testa
@@ -56,8 +57,12 @@ void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
     aggiungi_tessera(mano_giocatore, piano_gioco, trovata, posizione);
 }
 
-tessera *inserisci_indice(tessera *mano_giocatore, char *messaggio) {
-    int indice_tessera = inserisci_numero_compreso(messaggio, 0, mano_giocatore->estremo_destro - 1);
+tessera *inserisci_indice(tessera *mano_giocatore, char *azione) {
+    // Messaggio da stampare a terminale
+    char messaggio[50] = "Inserisci l'indice della tessera da ";
+    // Inserisci un numero compreso tra 0 e l'indice dell'ultima tessera
+    int indice_tessera = inserisci_numero_compreso(strcat(messaggio, azione), 0, mano_giocatore->estremo_destro - 1);
+    // Restituisci la tessera trovata all'indice indicato
     return trova_tessera(mano_giocatore, indice_tessera);
 }
 
@@ -79,8 +84,10 @@ void aggiungi_tessera(tessera *mano_giocatore, tessera *piano_gioco, tessera *tr
 }
 
 int conta_punteggio(tessera *piano_gioco) {
+    // Calcola il punteggio partendo dalla prima tessera sul piano di gioco
     tessera *corrente = piano_gioco->successivo;
     int punteggio = 0;
+    // Continua finche' non raggiungi l'ultima
     while (corrente != NULL) {
         punteggio += corrente->estremo_destro + corrente->estremo_sinistro;
         corrente = corrente->successivo;

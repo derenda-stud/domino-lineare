@@ -10,7 +10,7 @@ void inserisci_scelta(tessera *mano_giocatore, tessera *piano_gioco);
 // Seleziona la posizione della nuova tessera da inserire
 void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco);
 // Ritorna la tessera presente ad un particolare indice
-tessera *inserisci_indice(tessera *mano_giocatore, char *messaggio);
+tessera *inserisci_indice(tessera *mano_giocatore, char *azione);
 // Preleva la tessera dalla mano del giocatore ed inseriscila nel piano di gioco
 void aggiungi_tessera(tessera *mano_giocatore, tessera *piano_gioco, tessera *trovata, int posizione);
 // Calcola il punteggio alla fine della partita
