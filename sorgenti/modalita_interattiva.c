@@ -53,7 +53,7 @@ void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
         printf("Mossa non legale, prova con un'altra tessera\n");
         return;
     }
-    // Aggiungi la tessera alla posizione indicata
+    // Aggiungi la tessera [tenendo conto solo della posizione indicata]
     aggiungi_tessera(mano_giocatore, piano_gioco, trovata, posizione);
 }
 
