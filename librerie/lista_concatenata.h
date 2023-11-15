@@ -23,5 +23,7 @@ tessera *trova_tessera(tessera *sentinella, int indice_tessera);
 void rimuovi_tessera(tessera *sentinella, tessera *da_rimuovere);
 // Ruota la tessera nella mano del giocatore
 void ruota_tessera(tessera *da_ruotare);
+// Preleva la tessera dalla mano del giocatore ed inseriscila nel piano di gioco
+void aggiungi_tessera(tessera *mano_giocatore, tessera *piano_gioco, tessera *trovata, int posizione);
 
 #endif

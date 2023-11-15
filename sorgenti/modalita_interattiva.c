@@ -8,8 +8,9 @@
 #include "../librerie/controlli.h"
 
 void stampa_turno(tessera *mano_giocatore, tessera *piano_gioco) {
+    combinazione risultato;
     // Continua finche' rimangono tessere in mano e siano disponibili mosse legali
-    while (mano_giocatore->successivo != NULL && mosse_disponibili(mano_giocatore, piano_gioco)) {
+    while (mano_giocatore->successivo != NULL && mosse_disponibili(mano_giocatore, piano_gioco, &risultato)) {
         // Chiedi all'utente se vuole posizionare/ruotare una tessera
         printf(" - Premi 1 per posizionare una tessera\n");
         printf(" - Premi 2 per ruotare una tessera\n");
@@ -47,9 +48,9 @@ void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
         return;
     }
     // Seleziona se inserire la tessera a sinistra/destra
-    int posizione = inserisci_numero_compreso("Dove vuoi inserire la tessera? (1 per sx / 2 per dx): ", 1, 2);
+    int posizione = inserisci_numero_compreso("Dove vuoi inserire la tessera? (0 per sx / 1 per dx): ", 0, 1);
     // Controlla che la mossa effettuata sia legale
-    if (!mossa_legale(trovata, posizione, piano_gioco)) {
+    if (mossa_legale(trovata, posizione, piano_gioco) != 1) {
         printf("Mossa non legale, prova con un'altra tessera\n");
         return;
     }
@@ -64,23 +65,6 @@ tessera *inserisci_indice(tessera *mano_giocatore, char *azione) {
     int indice_tessera = inserisci_numero_compreso(strcat(messaggio, azione), 0, mano_giocatore->estremo_destro - 1);
     // Restituisci la tessera trovata all'indice indicato
     return trova_tessera(mano_giocatore, indice_tessera);
-}
-
-void aggiungi_tessera(tessera *mano_giocatore, tessera *piano_gioco, tessera *trovata, int posizione) {
-    // Rimuovi la tessere trovata dalla mano del giocatore
-    rimuovi_tessera(mano_giocatore, trovata);
-    // Aggiungi la tessera in base alla posizione selezionata
-    switch (posizione) {
-        case 1: {
-            inserimento_in_testa(piano_gioco, trovata);
-        } break;
-        case 2: {
-            inserimento_in_coda(piano_gioco, trovata);
-        } break;
-    }
-    // Aggiorna il numero corrente di tessere su entrambe le liste
-    mano_giocatore->estremo_destro--;
-    piano_gioco->estremo_destro++;
 }
 
 int conta_punteggio(tessera *piano_gioco) {
