@@ -1,5 +1,5 @@
 // #include e definizioni di funzione
-#include "../librerie/lista_concatenata.h"
+#include "librerie/lista_concatenata.h"
 
 #include <stdio.h>
 #include <stdlib.h>

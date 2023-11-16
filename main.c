@@ -1,13 +1,15 @@
+// 900983 899454
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-#include "../librerie/controlli.h"
-#include "../librerie/lista_concatenata.h"
-#include "../librerie/modalita_interattiva.h"
-#include "../librerie/modalita_challenge.h"
-#include "../librerie/modalita_ai.h"
+#include "librerie/controlli.h"
+#include "librerie/lista_concatenata.h"
+#include "librerie/modalita_ai.h"
+#include "librerie/modalita_challenge.h"
+#include "librerie/modalita_interattiva.h"
 
 /* Progetto Domino Lineare di Bertoncello Nicolas, Derevytskyy Alessandro */
 
@@ -17,11 +19,8 @@ int main(int argc, char *argv[]) {
         // Stabilire se avviare la modalita' challenge
         tessera *mano_giocatore = inserimento_parametri();
         tessera *piano_gioco = crea_tessera(0, 0);
-        // Comincia la partita seguendo un algoritmo AI
-        //first_match(mano_giocatore, piano_gioco);
-        first_match(mano_giocatore, piano_gioco);
-        printf("Ho eseguito l'algoritmo\n");
-        stampa_tessere(piano_gioco);
+        // Comincia la partita utilizzando il migliore algoritmo
+        esegui_algoritmo(mano_giocatore, piano_gioco);
         return 0;
     }
     // Altrimenti procedi con la modalita' interattiva e AI

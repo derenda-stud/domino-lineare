@@ -1,16 +1,15 @@
-#include "../librerie/modalita_interattiva.h"
+#include "librerie/modalita_interattiva.h"
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "../librerie/controlli.h"
+#include "librerie/controlli.h"
 
 void stampa_turno(tessera *mano_giocatore, tessera *piano_gioco) {
-    combinazione risultato;
     // Continua finche' rimangono tessere in mano e siano disponibili mosse legali
-    while (mano_giocatore->successivo != NULL && mosse_disponibili(mano_giocatore, piano_gioco, &risultato)) {
+    while (mosse_disponibili(mano_giocatore, piano_gioco)) {
         // Chiedi all'utente se vuole posizionare/ruotare una tessera
         printf(" - Premi 1 per posizionare una tessera\n");
         printf(" - Premi 2 per ruotare una tessera\n");
@@ -42,7 +41,7 @@ void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
     // Trova la tessere da prelevare dalla mano del giocatore
     tessera *trovata = inserisci_indice(mano_giocatore, "posizionare");
     // Se il piano di gioco e' vuoto non richiedere la posizione nell'inserimento
-    if(piano_gioco->successivo == NULL) {
+    if (piano_gioco->successivo == NULL) {
         // Impostiamo come predefinito l'inserimento in testa
         aggiungi_tessera(mano_giocatore, piano_gioco, trovata, 1);
         return;
@@ -54,7 +53,7 @@ void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
         printf("Mossa non legale, prova con un'altra tessera\n");
         return;
     }
-    // Aggiungi la tessera [tenendo conto solo della posizione indicata]
+    // Aggiungi la tessera alla posizione indicata
     aggiungi_tessera(mano_giocatore, piano_gioco, trovata, posizione);
 }
 
