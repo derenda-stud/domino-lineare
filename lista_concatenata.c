@@ -1,5 +1,5 @@
 // #include e definizioni di funzione
-#include "../librerie/lista_concatenata.h"
+#include "librerie/lista_concatenata.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -102,4 +102,21 @@ void ruota_tessera(tessera *da_ruotare) {
     int temp = da_ruotare->estremo_destro;
     da_ruotare->estremo_destro = da_ruotare->estremo_sinistro;
     da_ruotare->estremo_sinistro = temp;
+}
+
+void aggiungi_tessera(tessera *mano_giocatore, tessera *piano_gioco, tessera *trovata, int posizione) {
+    // Rimuovi la tessere trovata dalla mano del giocatore
+    rimuovi_tessera(mano_giocatore, trovata);
+    // Aggiungi la tessera in base alla posizione selezionata
+    switch (posizione) {
+        case 0: {
+            inserimento_in_testa(piano_gioco, trovata);
+        } break;
+        case 1: {
+            inserimento_in_coda(piano_gioco, trovata);
+        } break;
+    }
+    // Aggiorna il numero corrente di tessere su entrambe le liste
+    mano_giocatore->estremo_destro--;
+    piano_gioco->estremo_destro++;
 }
