@@ -48,8 +48,10 @@ void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
     }
     // Seleziona se inserire la tessera a sinistra/destra
     int posizione = inserisci_numero_compreso("Dove vuoi inserire la tessera? (0 per sx / 1 per dx): ", 0, 1);
+    // Memorizza la tessera in testa/in coda per confrontarne l'estremo
+    tessera *da_confrontare = trova_tessera(piano_gioco, posizione * piano_gioco->estremo_destro - 1);
     // Controlla che la mossa effettuata sia legale
-    if (mossa_legale(trovata, posizione, piano_gioco) != 1) {
+    if (mossa_legale(trovata, posizione, da_confrontare) != 1) {
         printf("Mossa non legale, prova con un'altra tessera\n");
         return;
     }

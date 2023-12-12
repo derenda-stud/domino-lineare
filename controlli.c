@@ -26,9 +26,9 @@ int inserisci_numero_compreso(char *messaggio, int minimo, int massimo) {
     return numero;
 }
 
-int mossa_legale(tessera *da_posizionare, int posizione, tessera *piano_gioco) {
-    // In base alla posizione ritorna la prima [0] o ultima [1] tessera del piano di gioco
-    tessera *da_confrontare = trova_tessera(piano_gioco, posizione * piano_gioco->estremo_destro - 1);
+int mossa_legale(tessera *da_posizionare, int posizione, tessera *da_confrontare) {
+    // Quando il piano di gioco e' nullo non sono necessari controlli
+    if(da_confrontare == NULL) return 1;
     // Confronta la tessera da inserire con quella in testa
     if (posizione == 0) {
         return estremi_corrispondono(da_posizionare->estremo_destro, da_posizionare->estremo_sinistro, da_confrontare->estremo_sinistro);

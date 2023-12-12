@@ -26,7 +26,7 @@ void esegui_algoritmo(tessera *mano_giocatore, tessera *piano_gioco) {
     // Finche' mi restituisce una tessera valida
     tessera *da_inserire;
     combinazione risultato;
-    for (int i = 0; (da_inserire = first_match(mano_giocatore, piano_gioco, &risultato)) != NULL; i++) {
+    for (int i = 0; (da_inserire = most_frequent(mano_giocatore, piano_gioco, &risultato)) != NULL; i++) {
         // Stabilisci se bisogna ruotare la tessera
         if (risultato.rotazione == true) {
             ruota_tessera(da_inserire);
