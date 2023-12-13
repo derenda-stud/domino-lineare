@@ -5,13 +5,23 @@
 #include <stdlib.h>
 
 void genera_tessere(tessera *sentinella, int dimensione) {
-    // Per ciascuna tessera del domino
-    for (int i = 0; i < dimensione; i++) {
+    int speciali = dimensione / 4;
+    // Genera le tessere normali
+    for (int i = 0; i < dimensione - speciali; i++) {
         // Genera due numeri casuali per ciasun estremo della tessera
         int casuale_sinistro = rand() % 6 + 1;
         int casuale_destro = rand() % 6 + 1;
-        // Aggiungi una nuova tessera
+        // Aggiungi la nuova tessera
         tessera *nuova = crea_tessera(casuale_sinistro, casuale_destro);
+        inserimento_in_coda(sentinella, nuova);
+    }
+    // Genera le tessere speciali
+    int estremi_speciali[3][2] = {{0, 0}, {11, 11}, {12, 21}};
+    for (int i = 0; i < speciali; i++) {
+        // Seleziona un indice casuale tra le 3 tessere disponibili
+        int indice_casuale = rand() % 3;
+        // Aggiungi la nuova tessera
+        tessera *nuova = crea_tessera(estremi_speciali[indice_casuale][0], estremi_speciali[indice_casuale][1]);
         inserimento_in_coda(sentinella, nuova);
     }
 }

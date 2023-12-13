@@ -46,7 +46,7 @@ tessera *most_frequent(tessera *mano_giocatore, tessera *piano_gioco, combinazio
             // Se ho trovato una corrispondenza
             if ((corrispondenza = mossa_legale(corrente, posizione, da_confrontare)) > 0) {
                 /* Incrementa la frequenza dell'indice pari ad estremo destro quando:
-                    - inserisoci in testa mantenendo l'ordine (0/1)
+                    - inserisci in testa mantenendo l'ordine (0/1)
                     pos 0 rot 0 corr 1 -> dx
                     - inserisci in coda ruotando la tessera (1/0)
                     pos 1 rot 1 corr 2 -> dx
@@ -73,13 +73,12 @@ tessera *most_frequent(tessera *mano_giocatore, tessera *piano_gioco, combinazio
             corrente = corrente->successivo;
         }
     }
-    /* // Stampa frequenze
+    // Stampa frequenze
     printf("\n[ ");
     for(int i=0; i<6; i++) {
         printf("%d ", frequenze[i]);
     }
     printf("]\n");
-    */
     // Libera la memoria allocata
     free(frequenze);
     // Ritorna la miglior tessera trovata

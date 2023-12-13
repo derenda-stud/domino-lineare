@@ -8,6 +8,8 @@
 #include "librerie/controlli.h"
 
 void stampa_turno(tessera *mano_giocatore, tessera *piano_gioco) {
+    // Stampa per la prima volta le tessere della mano del giocatore
+    stampa_tessere(mano_giocatore);
     // Continua finche' rimangono tessere in mano e siano disponibili mosse legali
     while (mosse_disponibili(mano_giocatore, piano_gioco)) {
         // Chiedi all'utente se vuole posizionare/ruotare una tessera
@@ -42,6 +44,10 @@ void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
     tessera *trovata = inserisci_indice(mano_giocatore, "posizionare");
     // Se il piano di gioco e' vuoto non richiedere la posizione nell'inserimento
     if (piano_gioco->successivo == NULL) {
+        // Non e' possibile piazzare le tessere speciali 11|11 e 12|21
+        if(trovata->estremo_sinistro == 11 || trovata->estremo_sinistro == 12) {
+            return;
+        }
         // Impostiamo come predefinito l'inserimento in testa
         aggiungi_tessera(mano_giocatore, piano_gioco, trovata, 1);
         return;
@@ -50,6 +56,7 @@ void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
     int posizione = inserisci_numero_compreso("Dove vuoi inserire la tessera? (0 per sx / 1 per dx): ", 0, 1);
     // Memorizza la tessera in testa/in coda per confrontarne l'estremo
     tessera *da_confrontare = trova_tessera(piano_gioco, posizione * piano_gioco->estremo_destro - 1);
+    // TODO: Implementa controllo di tessere speciali
     // Controlla che la mossa effettuata sia legale
     if (mossa_legale(trovata, posizione, da_confrontare) != 1) {
         printf("Mossa non legale, prova con un'altra tessera\n");

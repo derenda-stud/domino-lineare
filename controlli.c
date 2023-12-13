@@ -58,7 +58,10 @@ bool mosse_disponibili(tessera *mano_giocatore, tessera *piano_gioco) {
 }
 
 int estremi_corrispondono(int primo, int secondo, int estremo_piano) {
+    // Restituisci 1 se la tessera combacia mantenendo l'ordine
     if (primo == estremo_piano) return 1;
+    // Restituisci 2 se la tessera combacia girando l'ordine
     if (secondo == estremo_piano) return 2;
+    // Restituisci 0 se la tessera non ha corrispondenza
     return 0;
 }
