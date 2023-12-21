@@ -1,4 +1,4 @@
-#include "librerie/controlli.h"
+#include "../lib/controlli.h"
 
 #include <stdio.h>
 
@@ -28,7 +28,7 @@ int inserisci_numero_compreso(char *messaggio, int minimo, int massimo) {
 
 int mossa_legale(tessera *da_posizionare, int posizione, tessera *da_confrontare) {
     // Quando il piano di gioco e' nullo non sono necessari controlli
-    if(da_confrontare == NULL) return 1;
+    if (da_confrontare == NULL) return 1;
     // Confronta la tessera da inserire con quella in testa
     if (posizione == 0) {
         return estremi_corrispondono(da_posizionare->estremo_destro, da_posizionare->estremo_sinistro, da_confrontare->estremo_sinistro);
@@ -64,4 +64,40 @@ int estremi_corrispondono(int primo, int secondo, int estremo_piano) {
     if (secondo == estremo_piano) return 2;
     // Restituisci 0 se la tessera non ha corrispondenza
     return 0;
+}
+
+bool funzionalita_aggiuntive(tessera *da_posizionare, int posizione, tessera *da_confrontare, tessera *piano_gioco) {
+    switch (da_posizionare->estremo_sinistro) {
+        case 11: {
+            // Incrementa tutti gli estremi sul piano di gioco
+            incrementa_estremi(piano_gioco);
+            // In testa memorizza l'estremo sinistro
+            if (posizione == 0) {
+                da_posizionare->estremo_sinistro = da_confrontare->estremo_sinistro;
+                da_posizionare->estremo_destro = da_confrontare->estremo_sinistro;
+                // In coda memorizza l'estremo destro
+            } else {
+                da_posizionare->estremo_sinistro = da_confrontare->estremo_destro;
+                da_posizionare->estremo_sinistro = da_confrontare->estremo_destro;
+            }
+            break;
+        }
+        case 12: case 21: {
+            // Specchia gli estremi della tessera da posizionare
+            da_posizionare->estremo_sinistro = da_confrontare->estremo_destro;
+            da_posizionare->estremo_destro = da_confrontare->estremo_sinistro;
+            break;
+        }
+        case 0: {
+            // Non sono necessari controlli
+            break;
+        }
+        // Quando e' stata selezionata una normale tessera
+        default: {
+            // Bisogna effettuare il controllo separatamente
+            return false;
+        }
+    }
+    // Dopo aver modificato le tessere speciali non effettuare controlli
+    return true;
 }

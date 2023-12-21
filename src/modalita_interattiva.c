@@ -1,11 +1,11 @@
-#include "librerie/modalita_interattiva.h"
+#include "../lib/modalita_interattiva.h"
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "librerie/controlli.h"
+#include "../lib/controlli.h"
 
 void stampa_turno(tessera *mano_giocatore, tessera *piano_gioco) {
     // Stampa per la prima volta le tessere della mano del giocatore
@@ -41,29 +41,29 @@ void inserisci_scelta(tessera *mano_giocatore, tessera *piano_gioco) {
 
 void seleziona_tessera(tessera *mano_giocatore, tessera *piano_gioco) {
     // Trova la tessere da prelevare dalla mano del giocatore
-    tessera *trovata = inserisci_indice(mano_giocatore, "posizionare");
+    tessera *da_posizionare = inserisci_indice(mano_giocatore, "posizionare");
     // Se il piano di gioco e' vuoto non richiedere la posizione nell'inserimento
     if (piano_gioco->successivo == NULL) {
         // Non e' possibile piazzare le tessere speciali 11|11 e 12|21
-        if(trovata->estremo_sinistro == 11 || trovata->estremo_sinistro == 12) {
+        if (da_posizionare->estremo_sinistro == 11 || da_posizionare->estremo_sinistro == 12) {
+            printf("Mossa non legale, prova con un'altra tessera\n");
             return;
         }
         // Impostiamo come predefinito l'inserimento in testa
-        aggiungi_tessera(mano_giocatore, piano_gioco, trovata, 1);
+        aggiungi_tessera(mano_giocatore, piano_gioco, da_posizionare, 1);
         return;
     }
     // Seleziona se inserire la tessera a sinistra/destra
     int posizione = inserisci_numero_compreso("Dove vuoi inserire la tessera? (0 per sx / 1 per dx): ", 0, 1);
     // Memorizza la tessera in testa/in coda per confrontarne l'estremo
     tessera *da_confrontare = trova_tessera(piano_gioco, posizione * piano_gioco->estremo_destro - 1);
-    // TODO: Implementa controllo di tessere speciali
-    // Controlla che la mossa effettuata sia legale
-    if (mossa_legale(trovata, posizione, da_confrontare) != 1) {
+    // Controlla l'inserimento delle tessere speciali e la legalita' della mossa effettuata
+    if (!funzionalita_aggiuntive(da_posizionare, posizione, da_confrontare, piano_gioco) && mossa_legale(da_posizionare, posizione, da_confrontare) != 1) {
         printf("Mossa non legale, prova con un'altra tessera\n");
         return;
     }
     // Aggiungi la tessera alla posizione indicata
-    aggiungi_tessera(mano_giocatore, piano_gioco, trovata, posizione);
+    aggiungi_tessera(mano_giocatore, piano_gioco, da_posizionare, posizione);
 }
 
 tessera *inserisci_indice(tessera *mano_giocatore, char *azione) {

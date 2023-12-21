@@ -5,39 +5,29 @@
 #include <string.h>
 #include <time.h>
 
-#include "librerie/controlli.h"
-#include "librerie/lista_concatenata.h"
-#include "librerie/modalita_ai.h"
-#include "librerie/modalita_challenge.h"
-#include "librerie/modalita_interattiva.h"
+#include "../lib/controlli.h"
+#include "../lib/lista_concatenata.h"
+#include "../lib/modalita_ai.h"
+#include "../lib/modalita_challenge.h"
+#include "../lib/modalita_interattiva.h"
 
 /* Progetto Domino Lineare di Bertoncello Nicolas, Derevytskyy Alessandro */
 
 /*
-Modifiche per tessere speciali:
+Le tessere speciali:
+    * non avrebbe senso ruotarle? es. [12|21] diventa [21|12]?
+    * [11|11] e [12|21] non possono essere posizionate per prime
+    * [11|11] e [12|21] necessitano di funzionalita' aggiuntive
+    * incrementare [0|0] in [1|1] significa perdere la sua proprieta'
 
-
- attento a ruota con [12|21] -> [21|12]
- 
- 
- switch(estremo) {
+Inserimento generico per le tessere:
+switch(estremo) {
     case 11 -> incrementa, cambia valori
     case 12/21 -> cambia valori
     default -> se controllo non valido -> return
-}
-inserisci
- 
- * lista concatenata -> aggiungi tessera:
-   --NON SONO NECESSARI CONTROLLI--
-   -  0 | 0  -> inserimento normale
-   - 11 | 11 -> incrementa tutte le tessere
-	     -> imposta i valori pari all'estremo indicato
-   - 12 | 21 -> imposta valori pari alla tessera della posizione, girata
- * modalita interattiva -> seleziona tessera
- * algoritmi ai...
+} // 0|0 non necessita controlli
+inserisci_nel_piano
 
-NOTE:   * 11|11 e 12|21 non sono valide come prima mossa
-	    * 0|0 puo' essere incrementata in 1|1 <---
 */
 
 int main(int argc, char *argv[]) {

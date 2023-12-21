@@ -20,5 +20,7 @@ int mossa_legale(tessera *da_posizionare, int posizione, tessera *da_confrontare
 bool mosse_disponibili(tessera *mano_giocatore, tessera *piano_gioco);
 // Confronta gli estremi della tessera selezionata con un determinato valore
 int estremi_corrispondono(int primo, int secondo, int estremo_piano);
+// Esegui le opportune operazione nel caso sia stata inserita una tessera speciale 
+bool funzionalita_aggiuntive(tessera *da_posizionare, int posizione, tessera *da_confrontare, tessera *piano_gioco);
 
 #endif

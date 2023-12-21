@@ -25,5 +25,7 @@ void rimuovi_tessera(tessera *sentinella, tessera *da_rimuovere);
 void ruota_tessera(tessera *da_ruotare);
 // Preleva la tessera dalla mano del giocatore ed inseriscila nel piano di gioco
 void aggiungi_tessera(tessera *mano_giocatore, tessera *piano_gioco, tessera *trovata, int posizione);
+// Incrementa tutti gli estremi delle tessere presenti sul piano di gioco
+void incrementa_estremi(tessera *piano_gioco);
 
 #endif

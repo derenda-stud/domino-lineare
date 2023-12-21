@@ -1,9 +1,9 @@
-#include "librerie/modalita_challenge.h"
+#include "../lib/modalita_challenge.h"
 
 #include <stdio.h>
 
-#include "librerie/controlli.h"
-#include "librerie/modalita_ai.h"
+#include "../lib/controlli.h"
+#include "../lib/modalita_ai.h"
 
 tessera *inserimento_parametri() {
     // Richiedi il numero di tessere con cui giocare

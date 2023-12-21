@@ -1,4 +1,4 @@
-#include "librerie/modalita_ai.h"
+#include "../lib/modalita_ai.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,13 +1,13 @@
 // #include e definizioni di funzione
-#include "librerie/lista_concatenata.h"
+#include "../lib/lista_concatenata.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-void genera_tessere(tessera *sentinella, int dimensione) {
-    int speciali = dimensione / 4;
+void genera_tessere(tessera *sentinella, int dimensione_totale) {
+    int dimensione_speciali = dimensione_totale / 4;
     // Genera le tessere normali
-    for (int i = 0; i < dimensione - speciali; i++) {
+    for (int i = 0; i < dimensione_totale - dimensione_speciali; i++) {
         // Genera due numeri casuali per ciasun estremo della tessera
         int casuale_sinistro = rand() % 6 + 1;
         int casuale_destro = rand() % 6 + 1;
@@ -17,7 +17,7 @@ void genera_tessere(tessera *sentinella, int dimensione) {
     }
     // Genera le tessere speciali
     int estremi_speciali[3][2] = {{0, 0}, {11, 11}, {12, 21}};
-    for (int i = 0; i < speciali; i++) {
+    for (int i = 0; i < dimensione_speciali; i++) {
         // Seleziona un indice casuale tra le 3 tessere disponibili
         int indice_casuale = rand() % 3;
         // Aggiungi la nuova tessera
@@ -129,4 +129,15 @@ void aggiungi_tessera(tessera *mano_giocatore, tessera *piano_gioco, tessera *tr
     // Aggiorna il numero corrente di tessere su entrambe le liste
     mano_giocatore->estremo_destro--;
     piano_gioco->estremo_destro++;
+}
+
+void incrementa_estremi(tessera *piano_gioco) {
+    // Per ciascuna tessera presente sul piano di gioco
+    while (piano_gioco->successivo != NULL) {
+        // Incrementa gli estremi eseguendo un'operazione di modulo
+        piano_gioco->estremo_sinistro = (piano_gioco->estremo_sinistro % 6) + 1;
+        piano_gioco->estremo_destro = (piano_gioco->estremo_destro % 6) + 1;
+        // Procedi con la tessera successiva
+        piano_gioco = piano_gioco->successivo;
+    }
 }
