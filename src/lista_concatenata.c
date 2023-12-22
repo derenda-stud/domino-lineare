@@ -12,7 +12,7 @@ void genera_tessere(tessera *sentinella, int dimensione_totale) {
         int casuale_sinistro = rand() % 6 + 1;
         int casuale_destro = rand() % 6 + 1;
         // Aggiungi la nuova tessera
-        tessera *nuova = crea_tessera(casuale_sinistro, casuale_destro);
+        tessera *nuova = crea_tessera(casuale_sinistro, casuale_destro, false);
         inserimento_in_coda(sentinella, nuova);
     }
     // Genera le tessere speciali
@@ -21,17 +21,18 @@ void genera_tessere(tessera *sentinella, int dimensione_totale) {
         // Seleziona un indice casuale tra le 3 tessere disponibili
         int indice_casuale = rand() % 3;
         // Aggiungi la nuova tessera
-        tessera *nuova = crea_tessera(estremi_speciali[indice_casuale][0], estremi_speciali[indice_casuale][1]);
+        tessera *nuova = crea_tessera(estremi_speciali[indice_casuale][0], estremi_speciali[indice_casuale][1], true);
         inserimento_in_coda(sentinella, nuova);
     }
 }
 
-tessera *crea_tessera(int estremo_sinistro, int estremo_destro) {
+tessera *crea_tessera(int estremo_sinistro, int estremo_destro, bool speciale) {
     // Creazione della tessera con allocazione dinamica della memoria
     tessera *nuova_tessera = malloc(sizeof(tessera));
     // Imposta come valori della tessera quelli passati dal chiamante
     nuova_tessera->estremo_sinistro = estremo_sinistro;
     nuova_tessera->estremo_destro = estremo_destro;
+    nuova_tessera->speciale = speciale;
     // Inizializzo il valore del puntatore successivo
     nuova_tessera->successivo = NULL;
     // Ritorna il puntatore della tessera appena creata
@@ -133,11 +134,12 @@ void aggiungi_tessera(tessera *mano_giocatore, tessera *piano_gioco, tessera *tr
 
 void incrementa_estremi(tessera *piano_gioco) {
     // Per ciascuna tessera presente sul piano di gioco
-    while (piano_gioco->successivo != NULL) {
+    tessera *corrente = piano_gioco->successivo;
+    while (corrente != NULL) {
         // Incrementa gli estremi eseguendo un'operazione di modulo
-        piano_gioco->estremo_sinistro = (piano_gioco->estremo_sinistro % 6) + 1;
-        piano_gioco->estremo_destro = (piano_gioco->estremo_destro % 6) + 1;
+        corrente->estremo_sinistro = (corrente->estremo_sinistro % 6) + 1;
+        corrente->estremo_destro = (corrente->estremo_destro % 6) + 1;
         // Procedi con la tessera successiva
-        piano_gioco = piano_gioco->successivo;
+        corrente = corrente->successivo;
     }
 }

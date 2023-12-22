@@ -1,16 +1,19 @@
 #ifndef lista_concatenata_h
 #define lista_concatenata_h
 
+#include <stdbool.h>
+
 typedef struct struct_tessera {
     int estremo_sinistro;
     int estremo_destro;
+    bool speciale;
     struct struct_tessera *successivo;
 } tessera;
 
 // Genera delle tessere dai valori casuali dopo l'inserimento dell'utente
 void genera_tessere(tessera *sentinella, int dimensione);
 // Crea una nuova tessera assegnando una locazione nella memoria dinamica
-tessera *crea_tessera(int estremo_sinistro, int estremo_destro);
+tessera *crea_tessera(int estremo_sinistro, int estremo_destro, bool speciale);
 // Inserisci una nuova tessera in testa alla lista
 void inserimento_in_testa(tessera *sentinella, tessera *da_inserire);
 // Inserisci una nuova tessera in coda alla lista

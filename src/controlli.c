@@ -29,6 +29,10 @@ int inserisci_numero_compreso(char *messaggio, int minimo, int massimo) {
 int mossa_legale(tessera *da_posizionare, int posizione, tessera *da_confrontare) {
     // Quando il piano di gioco e' nullo non sono necessari controlli
     if (da_confrontare == NULL) return 1;
+    // Se sono in possesso di una tessera speciale posso continuare la partita
+    if(da_confrontare->speciale) {
+        return 1; // Posiziona la tessera mantenendo l'ordine
+    }
     // Confronta la tessera da inserire con quella in testa
     if (posizione == 0) {
         return estremi_corrispondono(da_posizionare->estremo_destro, da_posizionare->estremo_sinistro, da_confrontare->estremo_sinistro);
@@ -43,16 +47,18 @@ bool mosse_disponibili(tessera *mano_giocatore, tessera *piano_gioco) {
         // Non sono necessari controlli
         return true;
     }
-    // Per ciascuna tessera nella mano del giocatore
-    tessera *corrente = mano_giocatore->successivo;
-    while (corrente != NULL) {
-        // Confronta che il valore degli estremi corrisponda in testa e in coda
-        for (int posizione = 0; posizione <= 1; posizione++) {
-            if (mossa_legale(corrente, posizione, piano_gioco)) {
+    // Confronta che il valore degli estremi corrisponda in testa e in coda
+    for (int posizione = 0; posizione <= 1; posizione++) {
+        // Per ciascuna tessera nella mano del giocatore
+        tessera *corrente = mano_giocatore->successivo;
+        // Trova gli estremi della tessera da confrontare in base alla posizione
+        tessera *da_confrontare = trova_tessera(piano_gioco, posizione * piano_gioco->estremo_destro - 1);
+        while (corrente != NULL) {
+            if (mossa_legale(corrente, posizione, da_confrontare)) {
                 return true;
             }
+            corrente = corrente->successivo;
         }
-        corrente = corrente->successivo;
     }
     return false;
 }
@@ -66,7 +72,7 @@ int estremi_corrispondono(int primo, int secondo, int estremo_piano) {
     return 0;
 }
 
-bool funzionalita_aggiuntive(tessera *da_posizionare, int posizione, tessera *da_confrontare, tessera *piano_gioco) {
+void funzionalita_aggiuntive(tessera *da_posizionare, int posizione, tessera *da_confrontare, tessera *piano_gioco) {
     switch (da_posizionare->estremo_sinistro) {
         case 11: {
             // Incrementa tutti gli estremi sul piano di gioco
@@ -78,7 +84,7 @@ bool funzionalita_aggiuntive(tessera *da_posizionare, int posizione, tessera *da
                 // In coda memorizza l'estremo destro
             } else {
                 da_posizionare->estremo_sinistro = da_confrontare->estremo_destro;
-                da_posizionare->estremo_sinistro = da_confrontare->estremo_destro;
+                da_posizionare->estremo_destro = da_confrontare->estremo_destro;
             }
             break;
         }
@@ -88,16 +94,6 @@ bool funzionalita_aggiuntive(tessera *da_posizionare, int posizione, tessera *da
             da_posizionare->estremo_destro = da_confrontare->estremo_sinistro;
             break;
         }
-        case 0: {
-            // Non sono necessari controlli
-            break;
-        }
-        // Quando e' stata selezionata una normale tessera
-        default: {
-            // Bisogna effettuare il controllo separatamente
-            return false;
-        }
+        // Per la tessera [0|0] non sono necessari controlli
     }
-    // Dopo aver modificato le tessere speciali non effettuare controlli
-    return true;
 }
