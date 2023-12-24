@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <time.h>
 
 #include "../lib/controlli.h"
@@ -36,7 +37,7 @@ int main(int argc, char *argv[]) {
         // Inserisci le tessere della mano dal terminale
         tessera *mano_giocatore = inserimento_parametri();
         // Inizializza la sentinella del piano di gioco
-        tessera *piano_gioco = crea_tessera(0, 0);
+        tessera *piano_gioco = crea_tessera(0, 0, false);
         // Comincia la partita utilizzando il migliore algoritmo
         esegui_algoritmo(mano_giocatore, piano_gioco);
         return 0;
@@ -48,9 +49,9 @@ int main(int argc, char *argv[]) {
     int numero_tessere = inserisci_numero_tessere();
     // NOTA: Vengono utilizzati dei noti fantocci chiamati 'sentinelle'
     // Creazione delle tessere nella mano del giocatore tenendo conto del numero iniziale ed attuale
-    tessera *mano_giocatore = crea_tessera(numero_tessere, numero_tessere);
+    tessera *mano_giocatore = crea_tessera(numero_tessere, numero_tessere, false);
     // Creazione delle tessere sul piano di gioco impostando entrambi gli estremi a 0
-    tessera *piano_gioco = crea_tessera(0, 0);
+    tessera *piano_gioco = crea_tessera(0, 0, false);
     // Genera le tessere casuali nella mano del giocatore
     genera_tessere(mano_giocatore, numero_tessere);
     // Funzione per il proseguimento del gioco
